@@ -51,6 +51,7 @@ input {
     font-size: 1em; /* Font size */
     margin-bottom: 15px; /* Space between inputs */
     transition: border-color 0.3s ease; /* Transition for border color */
+    z-index:1;
 }
 
 input:focus {
@@ -102,6 +103,7 @@ button {
 
 #sendbtn {
     background-color: green;
+    z-index:1;
 }
 
 .login-btn-a, .create-account-btn-a {
