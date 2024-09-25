@@ -140,7 +140,7 @@
 <script>
     if (!localStorage.getItem('tosadsToken')) {
     alert('يرجى تسجيل الدخول')
-    window.location.pathname ='/adminsPage/index.html'
+    window.location.href = "https://tosads.github.io/adminsPage/index.html"
 } else {
     checkTheToken()
     
@@ -163,27 +163,27 @@ async function checkTheToken() {
         console.log(data)
         if (data['message'] == 'no') {
             alert('لم تقم بالتسجيل او انتهت مدة صلاحية التوكين، يرجى إعادة تسجيل الدخول')
-            window.location.pathname = '/adminsPage/index.html'
+            window.location.href = "https://tosads.github.io/adminsPage/index.html"
         } else if (data['message'] == 'authenticate') {
             alert('لم يتم تفعيل حسابك, يرجى التواصل مع المسؤول عن الموقع')
-            window.location.pathname = '/adminsPage/index.html'
+            window.location.href = "https://tosads.github.io/adminsPage/index.html"
         } else if (data['message'] == 'access') {
             document.querySelector('.username').textContent += data['name']
         }
     }
     catch {
         alert('حدث خطأ غير معروف، اذا استمرت المشكلة يرجى إبلاغ المسؤولين')
-        window.location.pathname = '/adminsPage/index.html'
+        window.location.href = "https://tosads.github.io/adminsPage/index.html"
     }
 
 }
 
 function logout() {
     if (!localStorage.getItem('tosadsToken')) {
-        window.localStorage.pathname = '/adminsPage/index.html'
+        window.location.href = "https://tosads.github.io/adminsPage/index.html"
     } else {
         localStorage.removeItem('tosadsToken')
-        window.location.pathname ='/adminsPage/index.html'
+        window.location.href = "https://tosads.github.io/adminsPage/index.html"
 
     }
 }
