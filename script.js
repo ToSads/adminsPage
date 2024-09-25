@@ -23,7 +23,7 @@ let myform = document.querySelector('#myform')
     }
     if (email == '' || password == '') {
         alert('يرجى وضع المعلومات بصورة صحيحة')
-        window.location.pathname = 'adminsPage/index.html'
+        window.location.pathname = '/adminsPage/index.html'
     }
     console.log(body)
     try {
@@ -41,7 +41,7 @@ let myform = document.querySelector('#myform')
             document.querySelector('.consolelog').textContent = data['message']
             console.log(response)
             console.log(data)
-            window.location.pathname = 'adminsPage/mainmenu.html'
+            window.location.pathname = '/adminsPage/mainmenu.html'
         } else {
             document.querySelector('.consolelog').textContent = data['message']
             console.log(response)
@@ -63,7 +63,7 @@ async function createAccount() {
     let password = myform.childNodes[9].value.trim()
     if (username == '' || email == '' || password == '') {
         alert('يرجى وضع المعلومات بصورة صحيحة')
-        window.location.pathname = 'adminsPage/index.html'
+        window.location.pathname = '/adminsPage/index.html'
     }
     let body = {
         username,
@@ -83,7 +83,7 @@ async function createAccount() {
     
         if (data['message'] == 'تم إنشاء الحساب، يرجى طلب تفعيله من المسؤولين ومن ثم تسجيل الدخول') {
             alert(data['message'])
-            window.location.pathname = 'adminsPage/index.html'
+            window.location.pathname = '/adminsPage/index.html'
         } else {
             document.querySelector('.consolelog').textContent = data['message']
             console.log(response)
