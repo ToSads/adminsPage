@@ -51,6 +51,7 @@ input {
     font-size: 1em; /* Font size */
     margin-bottom: 15px; /* Space between inputs */
     transition: border-color 0.3s ease; /* Transition for border color */
+    direction: ltr;
     z-index:1;
 }
 
