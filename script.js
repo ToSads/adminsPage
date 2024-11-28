@@ -1,6 +1,3 @@
-if (localStorage.getItem('tosadsToken')) {
-    localStorage.removeItem('tosadsToken')
-} 
 
 async function fetchtest() {
     const response = await fetch('https://tourmaline-delirious-burglar.glitch.me/exams', {
