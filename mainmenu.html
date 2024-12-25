@@ -44,6 +44,10 @@
         margin-bottom: 20px;
     }
 
+    #exam-type {
+        background-color: #003f82;
+    }
+
     .select {
         padding: 10px;
         margin: 10px 0;
@@ -62,6 +66,13 @@
         max-width: 600px;
         text-align: right;
     }
+    .question-text {
+    width: 90%;
+    height: 20px;
+    font-weight: bold;
+    font-size: large;
+}
+
 
     .answers-container {
         margin-top: 15px;
@@ -81,6 +92,7 @@
         border: 1px solid #666;
         color: #f0f0f0;
         border-radius: 5px;
+        font-weight: bold;
     }
 
     .answer input[type="checkbox"] {
@@ -240,21 +252,30 @@ const sendData = ()=> {
     examGroup = document.getElementById("exam-group")
     examTimeInMinutes = document.getElementById("exam-time")
     examLanguage = document.getElementById("exam-language")
+
+    let examObject = {
+            name: examName.value.trim(),
+            group: examGroup.value.split(','),
+            timeInMinutes: examTimeInMinutes.value.trim(),
+            language: examLanguage.value,
+            catagory: examType.value,
+            questions: questions
+        }
+        console.log(examObject)
+        if (examObject['name'] == '' || examObject['timeInMinutes'] == '' || !isNaN(examObject['timeInMinutes']) || examObject["catagory"] == 'none' || Object.keys(examObject['questions']).length < 1) {
+            alert('الرجاء التأكد من جميع الخانات')
+            return;
+        }
     
 
     document.querySelector(".disable-button").disabled = true;
     sendHttpRequest('POST', 'https://tourmaline-delirious-burglar.glitch.me/exams',
-        {
-            name: examName.value,
-            group: examGroup.value.split(','),
-            timeInMinutes: examTimeInMinutes.value,
-            language: examLanguage.value,
-            catagory: examType.value,
-            questions: questions
-          }).then(responseData => {console.log(responseData)
+        examObject
+    ).then(responseData => {console.log(responseData)
     alert("تم اضافة الاختبار") 
     location.reload()
-})
+        }
+)
     .catch(err => alert(err))
 }
 
@@ -341,10 +362,11 @@ function getProductInfo() {
                 <option id="exam-group-2025" value="2025">2025</option>
             </select>
             <hr>
-            <label for="">وقت الاختبار (بالدقائق)</label>
+            <label for="">وقت الاختبار (بالدقائق)
+                <br> <span style="color:#a2ccec;">الرجاء وضع الوقت بالارقام الانجليزية (1، 2 ،3)</span></label>
             <br>
             <br>
-            <input id="exam-time" type="number" placeholder="15">
+            <input id="exam-time" type="text" placeholder="15">
             <hr>
             <label for="">منهج الاختبار (قم بالاختيار اذا كان الاختبار احدى هذه المواد: احياء، كيمياء، فيزياء)</label>
             <br>
@@ -455,10 +477,11 @@ function chooseMethod() {
                 <option value="2025">2025</option>
             </select>
             <hr>
-            <label for="">وقت الاختبار (بالدقائق)</label>
+            <label for="">وقت الاختبار (بالدقائق)
+                <br> <span style="color:#a2ccec;">الرجاء وضع الوقت بالارقام الانجليزية (1، 2 ،3)</span></label>
             <br>
             <br>
-            <input id="exam-time" type="number" placeholder="15">
+            <input id="exam-time" type="text" placeholder="15">
             <hr>
             <label for="">منهج الاختبار (قم بالاختيار اذا كان الاختبار احدى هذه المواد: احياء، كيمياء، فيزياء)</label>
             <br>

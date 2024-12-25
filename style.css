@@ -54,6 +54,7 @@ input {
     z-index:1;
 }
 
+
 input:focus {
     border-color: #4a6e8a; /* Change border color on focus */
     outline: none; /* Remove default outline */
