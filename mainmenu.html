@@ -264,6 +264,7 @@ const sendData = ()=> {
         console.log(examObject)
         if (examObject['name'] == '' || examObject['timeInMinutes'] == '' || isNaN(examObject['timeInMinutes']) || examObject["catagory"] == 'none' || Object.keys(examObject['questions']).length < 1) {
             alert('الرجاء التأكد من جميع الخانات')
+            document.querySelector(".disable-button").disabled = false;
             return;
         }
     
