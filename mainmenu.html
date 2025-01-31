@@ -522,6 +522,10 @@ function getProductInfo() {
                 <option id="exam-type-Grammar" value="Grammar">قواعد لغة عربية</option>
             </select>
             <hr>
+            
+            ${generateExamHTML(examBeforeUpdateInfo["catagory"], examBeforeUpdateInfo["language"], (examBeforeUpdateInfo["section"] ? examBeforeUpdateInfo["catagory"] : "other"))}
+            
+            <hr>
             <label for="">اسم الاختبار (الاسم + المادة الداخلة)</label>
             <br>
             <br>
@@ -541,9 +545,6 @@ function getProductInfo() {
             <input id="exam-time" type="text" placeholder="15">
             <hr>
 
-            ${generateExamHTML(examBeforeUpdateInfo["catagory"], examBeforeUpdateInfo["language"], (examBeforeUpdateInfo["section"] ? examBeforeUpdateInfo["catagory"] : "other"))}
-            
-            <hr>
             
         <div id="questions"></div>
         <button class="add-question-btn" onclick="addQuestion()">اضافة سؤال</button>
@@ -669,6 +670,9 @@ function chooseMethod() {
                 <option value="Grammar">قواعد لغة عربية</option>
             </select>
             <hr>
+            
+            ${htmlString}
+            <hr>
             <label for="">اسم الاختبار (الاسم + المادة الداخلة)</label>
             <br>
             <br>
@@ -688,7 +692,6 @@ function chooseMethod() {
             <input id="exam-time" type="text" placeholder="15">
             <hr>
             
-            ${htmlString}
 
         <div id="questions"></div>
         <button class="add-question-btn" onclick="addQuestion()">اضافة سؤال</button>
