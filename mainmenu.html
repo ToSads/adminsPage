@@ -135,11 +135,7 @@
     <img src="img2.png" alt="Loading...">
     <h3>loading....</h3>
 </div>
-<h3>هذا الملف هو امانة لديك <br> حافظ عليه ولاتقم بأي شيء خارج النطاق المسموح لك دون أذن الاشخاص المسؤولين <br> قم بالتأني في كتابة المعلومات والتأكد منها قبل الارسال <br> إن قمت بخطأ غير مقصود يرجى اخبار الاشخاص المسؤولين</h3>
-<h2>يرجى وضع اختبارات تحتوي على اقل من 100 سؤال <br>وكل سؤال يحتوي على اقل من 10 أجوبة</br>
-<br> قد يتم طلب تسجيل دخول مرة اخرى من وقت لاخر بسبب اجراءات الأمان
-</h2>
-    <h2>قم باختيار المطلوب</h2>
+<h3>قم بالتأني بكتابة الاختبارات <br> قم بالتأكد من كل سؤال وفق المنهج لان الطلبة قد يعتمدون الاجوبة الموجودة في الاختبارات <br> الحد الاقصى للاسئلة في كل اختبار 100 <br> الحد الاقصى للاجوبة في كل سؤال 10 <br> قد يتم طلب تسجيل الدخول من وقت لاخر بسبب اجرائات الامان</h3>
 <select id="methods" class="select" name="methods" onchange="chooseMethod()">
     <option value="none">--يرجى الاختيار--</option>
     <option value="POST">اضافة</option>
@@ -159,6 +155,145 @@
 } else {
     checkTheToken()
     
+}
+
+
+
+let sectionsObj = {
+    "Biology": {
+        "arabicSections": [
+            "الأول - الخلية",  
+            "الثاني - الأنسجة",  
+            "الثالث - التكاثر",  
+            "الرابع - التكوين الجنيني",  
+            "الخامس - الوراثة"
+        ],
+        "englishSections": [
+            "1 - The cell",  
+            "2 - Tissues",  
+            "3 - Reproduction",  
+            "4 - Embryonic Development",  
+            "5 - genetics"
+        ]
+    },
+    "Physics": {
+        "arabicSections": [
+            "الأول - متسعات",  
+            "الثاني - الحث الكهرومغناطيسي",  
+            "الثالث - التيار المتناوب",  
+            "الرابع - الموجات الكهرومغناطيسية",  
+            "الخامس - البصريات الفيزيائية",  
+            "السادس - الفيزياء الحديثة",  
+            "السابع - الكترونيات الحالة الصلبة",  
+            "الثامن - الاطياف الذرية والليزر",  
+            "التاسع - الفيزياء النووية"
+        ],
+        "englishSections": [
+            "1 - Capacitar",  
+            "2 - Electromagnetic induction",  
+            "3 - Alternating current",  
+            "4 - Electromagnetic oscillation",  
+            "5 - Optical physics",  
+            "6 - Modern physics",  
+            "7 - Solid state electronics",  
+            "8 - ATOMIC SPECTRUM AND LASER",  
+            "9 - Nuclear physics"  
+        ]
+    },
+    "Chemistry": {
+        "arabicSections": [
+            "الأول - الثرموداينمك",  
+            "الثاني - الاتزان الكيميائي",  
+            "الثالث - الاتزان الايوني",  
+            "الرابع - الكهربائية",  
+            "الخامس - التناسقية",  
+            "السادس - التحليلية",  
+            "السابع - العضوية",  
+            "الثامن - الكيمياء الحياتية"
+        ],
+        "englishSections": [
+            "1 - Thermodynamics",  
+            "2 - Chemical Equilibrium",  
+            "3 - Ionic Equilibrium",  
+            "4 - Electrochemistry",  
+            "5 - Coordination Chemistry",  
+            "6 - Chemical Analysis",  
+            "7 - Organic Chemistry",  
+            "8 - Biochemistry"  
+        ]
+    },
+    "English": {
+        "defaultSections": [
+            "Unit 1",
+            "Unit 2",
+            "Unit 3",
+            "Unit 4",
+            "Unit 5",
+            "Unit 6",
+            "Unit 7",
+            "Unit 8",
+            "Literature",
+        ]
+    },
+    "French": {
+        "defaultSections": [
+            "Prononciation",
+             "le présent",
+             "l'impératif",
+             "l'imparfait",
+             "le passé composé",         
+            "le futur simple",
+             "passé récent + futur proche + présent continu",
+             "le plus-que-parfait",
+            "le conditionnel présent",
+             "le futur antérieur",
+             "le conditionnel passé",
+             "le subjonctif",
+            "le gérondif",
+             "جمل الشرط",
+             "جمل التزامن",
+             "Les pronoms d’objet",
+             "les pronoms relatifs",
+            "l'interrogation",
+             "la négation",
+             "سؤال الفراغات والاختيارات",
+             "les prépositions",
+            "Le féminin",
+             "Les adverbes",
+             "le pluriel",
+             "أسئلة ومفردات الدرس الأول",
+             "الدرس الثاني",
+            "الدرس الثالث",
+             "الدرس الرابع",
+             "الدرس الخامس"
+            ]
+    },
+    "Islamic": {
+        "defaultSections": [
+            "الوحدة الاولى",
+            "الوحدة الثانية",
+            "الوحدة الثالثة",
+            "الوحدة الرابعة",
+            "الوحدة الخامسة",
+        ]
+    },
+    "Literature": {
+        "defaultSections": ["الجزء الاول","الجزء الثاني"]
+    },
+    "Grammar": {
+        "defaultSections": [
+            "الاستفهام",  
+            "النفي",  
+            "التقديم والتأخير",  
+            "التوكيد",  
+            "النداء",  
+            "المدح والذم",  
+            "العرض والتحضيض",  
+            "التمني والترجي",  
+            "الإغراء والتحذير",  
+            "التعجب"  
+        ]
+    },
 }
 
 async function checkTheToken() {
@@ -245,6 +380,7 @@ let examName;
 let examGroup;
 let examTimeInMinutes;
 let examLanguage;
+let examSection;
 
 const sendData = ()=> {
 
@@ -254,6 +390,7 @@ const sendData = ()=> {
     examGroup = document.getElementById("exam-group")
     examTimeInMinutes = document.getElementById("exam-time")
     examLanguage = document.getElementById("exam-language")
+    examSection = document.getElementById("exam-section")
 
     let examObject = {
             name: examName.value.trim(),
@@ -261,13 +398,14 @@ const sendData = ()=> {
             timeInMinutes: examTimeInMinutes.value.trim(),
             language: examLanguage.value,
             catagory: examType.value,
+            section: examSection.value,
             questions: questions
         }
         console.log(examObject)
         if (examObject['name'] == '' || examObject['timeInMinutes'] == '' || isNaN(examObject['timeInMinutes']) || examObject["catagory"] == 'none' || Object.keys(examObject['questions']).length < 1) {
             alert('الرجاء التأكد من جميع الخانات')
             document.querySelector(".disable-button").disabled = false;
-            return;            
+            return;
         }
     
 
@@ -315,8 +453,39 @@ const deleteData = ()=> {
 
 /// PUT ---------------------------------------------
 
+function generateExamHTML(subject, language, section) {
+  let htmlString = "";
 
+  if (subject === "Biology" || subject === "Physics" || subject === "Chemistry") {
+    htmlString += `
+      <label for="">منهج الاختبار</label>
+      <br>
+      <br>
+      <select class="select" name="exam-language" id="exam-language">
+        <option value="none">يرجى الاختيار</option>
+        <option value="English" ${language === "English" ? "selected" : ""}>منهج انجليزي</option>
+        <option value="Arabic" ${language === "Arabic" ? "selected" : ""}>منهج عربي</option>
+      </select>
+      <hr>
+    `;
+  } else {
+    htmlString += '<label>الفصل / الموضوع </label> <br> <select class="select" name="exam-section" id="exam-section">';
+    sectionsObj[subject]["defaultSections"].forEach(defaultSection => {
+      htmlString += `<option value="${defaultSection}" ${section === defaultSection ? "selected" : ""}>${defaultSection}</option>`;
+    });
+    htmlString += `<option value='other' ${section === "other" ? "selected" : ""}>اخرى / اختبارات شاملة</option> </select>`;
+  }
 
+  if (language !== "none" && (subject === "Biology" || subject === "Physics" || subject === "Chemistry")) {
+    htmlString += '<label>الفصل / الموضوع </label> <br> <select class="select" name="exam-section" id="exam-section">';
+    sectionsObj[subject][(language === "Arabic" ? "arabicSections" : "englishSections")].forEach(langSection => {
+      htmlString += `<option value="${langSection}" ${section === langSection ? "selected" : ""}>${langSection}</option>`;
+    });
+    htmlString += `<option value='other' ${section === "other" ? "selected" : ""}>اخرى / اختبارات شاملة</option> </select>`;
+  }
+
+  return (htmlString);
+}
 
 let examBeforeUpdateInfo;
 
@@ -371,14 +540,9 @@ function getProductInfo() {
             <br>
             <input id="exam-time" type="text" placeholder="15">
             <hr>
-            <label for="">منهج الاختبار (قم بالاختيار اذا كان الاختبار احدى هذه المواد: احياء، كيمياء، فيزياء)</label>
-            <br>
-            <br>
-            <select class="select" name="exam-language" id="exam-language">
-                <option id="exam-language-none" value="none">ليست احياء او كيمياء او فيزياء</option>
-                <option id="exam-language-English" value="English">منهج انجليزي</option>
-                <option id="exam-language-Arabic" value="Arabic">منهج عربي</option>
-            </select>
+
+            ${generateExamHTML(examBeforeUpdateInfo["catagory"], examBeforeUpdateInfo["language"], (examBeforeUpdateInfo["section"] ? examBeforeUpdateInfo["catagory"] : "other"))}
+            
             <hr>
             
         <div id="questions"></div>
@@ -400,8 +564,7 @@ function getProductInfo() {
 
     }
     document.getElementById("exam-time").value = examBeforeUpdateInfo["timeInMinutes"]
-    document.getElementById(`exam-language-${examBeforeUpdateInfo["language"]}`).selected = true
-        
+
     populateQuestionsFromJSON(examBeforeUpdateInfo['questions'])    
 }
 
@@ -415,6 +578,7 @@ const updateData = async ()=> {
     examGroup = document.getElementById("exam-group")
     examTimeInMinutes = document.getElementById("exam-time")
     examLanguage = document.getElementById("exam-language")
+    examSection = document.getElementById("exam-section")
     
 
 
@@ -439,9 +603,46 @@ const updateData = async ()=> {
 
 
 
+let htmlString = ""
+function subjectSelected(value, language) {
+    if (value == "Biology" || value == "Physics" || value == "Chemistry") {
+        htmlString = ''
+        htmlString += `
+        <label for="">منهج الاختبار</label>
+            <br>
+            <br>
+            <select onchange="subjectSelected('${value}', this.value)" class="select" name="exam-language" id="exam-language">
+                <option value="none">يرجى الاختيار</option>
+                <option value="English">منهج انجليزي</option>
+                <option value="Arabic">منهج عربي</option>
+            </select>
+            <hr>
+        `
+    } else if (value != "Biology" && value != "Physics" && value != "Chemistry") {
+        htmlString = '<label>الفصل / الموضوع </label> <br> <select class="select" name="exam-section" id="exam-section">'
+        sectionsObj[value]["defaultSections"].forEach(section => {
+            htmlString += `<option value="${section}">${section}</option>`
+        })
+        htmlString += "<option value='other'>اخرى / اختبارات شاملة</option> </select>"
+    }
 
 
+    if (language != "none") {
+    
+        htmlString += '<label>الفصل / الموضوع </label> <br> <select class="select" name="exam-section" id="exam-section">'
+            sectionsObj[value][(language == "Arabic" ? "arabicSections" : "englishSections")].forEach(section => {
+            htmlString += `<option value="${section}">${section}</option>`
+        })
+        htmlString += "<option value='other'>اخرى / اختبارات شاملة</option> </select>"
+    }
 
+    chooseMethod()
+    document.getElementById('exam-type').value = value
+    if (value == "Biology" || value == "Physics" || value == "Chemistry") {
+        document.getElementById('exam-language').value = language
+    }
+
+}
 
 const methodsEl = document.getElementById("methods")
 const appEl = document.getElementById("app")
@@ -456,7 +657,7 @@ function chooseMethod() {
         <label for="">قسم الاختبار</label>
         <br>
         <br>
-            <select class="select" name="exam-type" id="exam-type">
+            <select onchange="subjectSelected(this.value, 'none')" class="select" name="exam-type" id="exam-type">
                 <option value="none">--يرجى الاختيار--</option>
                 <option value="Biology">احياء</option>
                 <option value="Physics">فيزياء</option>
@@ -486,16 +687,9 @@ function chooseMethod() {
             <br>
             <input id="exam-time" type="text" placeholder="15">
             <hr>
-            <label for="">منهج الاختبار (قم بالاختيار اذا كان الاختبار احدى هذه المواد: احياء، كيمياء، فيزياء)</label>
-            <br>
-            <br>
-            <select class="select" name="exam-language" id="exam-language">
-                <option value="none">ليست احياء او كيمياء او فيزياء</option>
-                <option value="English">منهج انجليزي</option>
-                <option value="Arabic">منهج عربي</option>
-            </select>
-            <hr>
             
+            ${htmlString}
+
         <div id="questions"></div>
         <button class="add-question-btn" onclick="addQuestion()">اضافة سؤال</button>
         <br>
@@ -514,6 +708,7 @@ function chooseMethod() {
         examGroup = document.getElementById("exam-group")
         examTimeInMinutes = document.getElementById("exam-time")
         examLanguage = document.getElementById("exam-language")
+        examSection = document.getElementById("exam-section")
         
         
         
