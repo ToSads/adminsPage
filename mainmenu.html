@@ -139,6 +139,7 @@
 <h2>يرجى وضع اختبارات تحتوي على اقل من 100 سؤال <br>وكل سؤال يحتوي على اقل من 10 أجوبة</br>
 <br> قد يتم طلب تسجيل دخول مرة اخرى من وقت لاخر بسبب اجراءات الأمان
 </h2>
+    <h2>قم باختيار المطلوب</h2>
 <select id="methods" class="select" name="methods" onchange="chooseMethod()">
     <option value="none">--يرجى الاختيار--</option>
     <option value="POST">اضافة</option>
@@ -266,7 +267,7 @@ const sendData = ()=> {
         if (examObject['name'] == '' || examObject['timeInMinutes'] == '' || isNaN(examObject['timeInMinutes']) || examObject["catagory"] == 'none' || Object.keys(examObject['questions']).length < 1) {
             alert('الرجاء التأكد من جميع الخانات')
             document.querySelector(".disable-button").disabled = false;
-            return;
+            return;            
         }
     
 
