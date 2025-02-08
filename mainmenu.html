@@ -396,7 +396,7 @@ const sendData = ()=> {
             name: examName.value.trim(),
             group: examGroup.value.split(','),
             timeInMinutes: examTimeInMinutes.value.trim(),
-            language: examLanguage.value,
+            language: (examLanguage.value ? examLanguage.value : "none"),
             catagory: examType.value,
             section: examSection.value,
             questions: questions
@@ -591,7 +591,7 @@ const updateData = async ()=> {
             name: examName.value,
             group: examGroup.value.split(','),
             timeInMinutes: examTimeInMinutes.value,
-            language: examLanguage.value,
+            language: (examLanguage.value ? examLanguage.value : "none"),
             catagory: examType.value,
             questions: questions
           })
