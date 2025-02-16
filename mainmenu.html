@@ -183,6 +183,34 @@
             checkTheToken();
         }
 
+        // Check Token Function
+        async function checkTheToken() {
+            const sentToken = localStorage.getItem('tosadsToken');
+            const body = { sentToken };
+            try {
+                const response = await fetch('https://tourmaline-delirious-burglar.glitch.me/accounts/checkToken', {
+                    method: 'POST',
+                    body: JSON.stringify(body),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+                const data = await response.json();
+                if (data['message'] === 'no') {
+                    alert('لم تقم بالتسجيل او انتهت مدة صلاحية التوكين، يرجى إعادة تسجيل الدخول');
+                    window.location.href = "https://tosads.github.io/adminsPage/index.html";
+                } else if (data['message'] === 'authenticate') {
+                    alert('لم يتم تفعيل حسابك, يرجى التواصل مع المسؤول عن الموقع');
+                    window.location.href = "https://tosads.github.io/adminsPage/index.html";
+                } else if (data['message'] === 'access') {
+                    document.querySelector('.username').textContent += data['name'];
+                }
+            } catch (error) {
+                alert('حدث خطأ غير معروف، اذا استمرت المشكلة يرجى إبلاغ المسؤولين');
+                window.location.href = "https://tosads.github.io/adminsPage/index.html";
+            }
+        }
+
         // Fetch All Exams
         const getData = () => {
             sendHttpRequest('GET', 'https://tourmaline-delirious-burglar.glitch.me/exams')
