@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2c2c2c;
+            color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            text-align: right;
+        }
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .loading-screen img {
+            max-width: 10%;
+            animation: rotate 2.8s infinite linear;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(359deg); }
+        }
+
+        h2, h3 {
+            color: #ffcc00;
+            margin-bottom: 20px;
+        }
+
+        .select {
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #404040;
+            border: 1px solid #555;
+            color: #f0f0f0;
+            border-radius: 5px;
+            width: 80%;
+            box-sizing: border-box;
+        }
+
+        .input-field {
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #404040;
+            border: 1px solid #555;
+            color: #f0f0f0;
+            border-radius: 5px;
+            width: 80%;
+            box-sizing: border-box;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+            justify-content: flex-end;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            color: #ccc;
+            margin-right: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-left: 5px;
+        }
+
+        .question-controls-container,
+        .section-controls-container,
+        #edit-section-form,
+        #edit-question-form,
+        #add-question-form {
+            text-align: right;
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #3a3a3a;
+            border-radius: 8px;
+            background-color: #3b3b3b;
+        }
+
+        .question-controls-container label,
+        .section-controls-container label,
+        #edit-section-form label,
+        #edit-question-form label,
+        #add-question-form label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ddd;
+        }
+
+        .question-controls-container input[type="text"],
+        .question-controls-container input[type="number"],
+        .question-controls-container select,
+        .section-controls-container input[type="text"],
+        #edit-section-form input[type="text"],
+        #edit-section-form input[type="number"],
+        #edit-section-form select,
+        #edit-question-form input[type="text"],
+        #edit-question-form input[type="number"],
+        #edit-question-form select,
+        #add-question-form input[type="text"],
+        #add-question-form input[type="number"],
+        #add-question-form select {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .question-container {
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #3a3a3a;
+            border-radius: 8px;
+            background-color: #3b3b3b;
+            max-width: 800px;
+            text-align: right;
+        }
+
+        .answers-container {
+            margin-top: 15px;
+        }
+
+        .answer {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .answer input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            margin-right: 10px;
+            background-color: #505050;
+            border: 1px solid #666;
+            color: #f0f0f0;
+            border-radius: 5px;
+        }
+
+        .answer input[type="checkbox"] {
+            margin-left: 10px;
+        }
+
+        .answer button {
+            padding: 8px 15px;
+            background-color: #ff4747;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button {
+            padding: 12px 25px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .disable-button {
+            background-color: greenyellow;
+            color: #333;
+        }
+
+        hr {
+            border-color: #555;
+            margin: 20px 0;
+        }
+
+        .log-out {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 8px 15px;
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .log-out:hover {
+            background-color: #c82333;
+        }
+
+        .username {
+            text-align: right;
+            margin-bottom: 20px;
+            color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <button class="log-out" onclick="logout()">تسجيل الخروج</button>
+    <h3 class="username">Welcome: </h3>
+    <div class="loading-screen">
+        <img src="img2.png" alt="Loading...">
+        <h3>loading....</h3>
+    </div>
+    <h3>هذا الملف هو امانة لديك <br> حافظ عليه ولاتقم بأي شيء خارج النطاق المسموح لك دون أذن الاشخاص المسؤولين <br> قم بالتأني في كتابة المعلومات والتأكد منها قبل الارسال <br> إن قمت بخطأ غير مقصود يرجى اخبار الاشخاص المسؤولين</h3>
+    <h2>التحكم في الأقسام والروابط</h2>
+    <select id="main-methods" class="select" name="main-methods" onchange="chooseMainMethod()">
+        <option value="none">--يرجى الاختيار--</option>
+        <option value="sections">الأقسام</option>
+        <option value="questions">الروابط</option>
+    </select>
+    <br><br><br>
+    <hr>
+    <div id="app">
+        </div>
+
+    <script>
+if (!localStorage.getItem('tosadsToken')) {
+            alert('يرجى تسجيل الدخول');
+            window.location.pathname ='index.html';
+        } else {
+            checkTheToken();
+        }
+
+        async function checkTheToken() {
+            let sentToken = localStorage.getItem('tosadsToken');
+            let body = {
+                sentToken
+            };
+            try {
+                const response = await fetch('https://tourmaline-delirious-burglar.glitch.me/accounts/checkToken', {
+                    method: 'POST',
+                    body: JSON.stringify(body),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+                let data = await response.json();
+                console.log(data);
+                if (data['message'] == 'no') {
+                    alert('لم تقم بالتسجيل او انتهت مدة صلاحية التوكين، يرجى إعادة تسجيل الدخول');
+                    window.location.pathname = 'index.html';
+                } else if (data['message'] == 'authenticate') {
+                    alert('لم يتم تفعيل حسابك, يرجى التواصل مع المسؤول عن الموقع');
+                    window.location.pathname = 'index.html';
+                } else if (data['message'] == 'access') {
+                    document.querySelector('.username').textContent += data['name'];
+                }
+            }
+            catch (error) {
+                alert('حدث خطأ غير معروف، اذا استمرت المشكلة يرجى إبلاغ المسؤولين');
+                window.location.pathname = 'index.html';
+                console.error("Token check error:", error);
+            }
+        }
+
+        function logout() {
+            if (localStorage.getItem('tosadsToken')) {
+                localStorage.removeItem('tosadsToken');
+                window.location.pathname ='index.html';
+            } else {
+                window.location.pathname = 'index.html';
+            }
+        }
+
+        const sendHttpRequest = (method, url, data) => {
+            return fetch(url, {
+                method: method,
+                body: JSON.stringify(data),
+                headers: {
+                    'authorization': "Bearer " + localStorage.getItem('tosadsToken'),
+                    "Content-Type": "application/json"
+                }
+            }).then(response => {
+                if (response.status >= 400) {
+                    return response.json().then(errData => {
+                        alert(errData.message || 'حدث خطأ في الطلب.');
+                        throw new Error(errData.message || 'Request failed');
+                    });
+                }
+                return response.json();
+            });
+        };
+
+        let allSections = [];
+        let allQuestions = [];
+        const availableSubjects = ["اللغة العربية", "اللغة الانكليزية", "اللغة الفرنسية", "الكيمياء", "الفيزياء", "الاحياء", "الرياضيات", "التربية الاسلامية"];
+        let loadingScreen = document.querySelector('.loading-screen');
+
+        const fetchData = async () => {
+            loadingScreen.style.display = "flex";
+            try {
+                const sectionsResponse = await sendHttpRequest('GET', 'https://tourmaline-delirious-burglar.glitch.me/catagories');
+                allSections = await sectionsResponse;
+                const questionsResponse = await sendHttpRequest('GET', 'https://tourmaline-delirious-burglar.glitch.me/links');
+                allQuestions = await questionsResponse;
+                loadingScreen.style.display = "none";
+            } catch (error) {
+                loadingScreen.innerHTML = `<h3>${error.message}</h3>`;
+                console.error("Fetch data error:", error);
+            }
+        };
+
+        fetchData();
+
+        const appEl = document.getElementById("app");
+
+        function chooseMainMethod() {
+            appEl.innerHTML = '';
+            const selectedMethod = document.getElementById("main-methods").value;
+
+            if (selectedMethod === "sections") {
+                renderSectionControls();
+            } else if (selectedMethod === "questions") {
+                renderQuestionControls();
+            }
+        }
+
+        // ---------------------------- Sections Functionality (API) ----------------------------
+        function renderSectionControls() {
+            appEl.innerHTML = `
+                <h2>التحكم في الأقسام</h2>
+                <select id="section-methods" class="select" name="section-methods" onchange="handleSectionMethodChange()">
+                    <option value="none">--يرجى الاختيار--</option>
+                    <option value="add">إضافة قسم</option>
+                    <option value="edit">تعديل قسم</option>
+                    <option value="delete">حذف قسم</option>
+                </select>
+                <div id="section-controls-container"></div>
+            `;
+        }
+
+        function handleSectionMethodChange() {
+            const container = document.getElementById("section-controls-container");
+            container.innerHTML = '';
+            const selectedMethod = document.getElementById("section-methods").value;
+
+            if (selectedMethod === "add") {
+                container.innerHTML = renderAddSectionForm();
+            } else if (selectedMethod === "edit") {
+                container.innerHTML = renderEditSectionForm();
+            } else if (selectedMethod === "delete") {
+                container.innerHTML = renderDeleteSectionForm();
+            }
+        }
+
+        function renderAddSectionForm() {
+            const subjects = ["اللغة العربية", "اللغة الانكليزية", "اللغة الفرنسية", "الكيمياء", "الفيزياء", "الاحياء", "الرياضيات", "التربية الاسلامية"];
+            return `
+                <div id="add-section-form">
+                    <h3>إضافة قسم جديد</h3>
+                    <label for="section-name" class="rtl-label">اسم القسم:</label><br>
+                    <input type="text" id="section-name" class="input-field" dir="rtl"><br><br>
+                    <label class="rtl-label">المواد الشاملة للقسم:</label><br>
+                    <div class="checkbox-group">
+                        ${subjects.map(subject => `
+                            <label>
+                                <input type="checkbox" name="section-subjects" value="${subject}"> ${subject}
+                            </label>
+                        `).join('')}
+                    </div>
+                    <button onclick="addSection()" class="disable-button">إضافة القسم</button>
+                </div>
+            `;
+        }
+
+        function getSelectedSectionSubjects() {
+            const checkboxes = document.querySelectorAll('input[name="section-subjects"]:checked');
+            return Array.from(checkboxes).map(cb => cb.value);
+        }
+
+        async function addSection() {
+            const name = document.getElementById("section-name").value;
+            const subjects = getSelectedSectionSubjects();
+            const disableButton = document.querySelector("#add-section-form .disable-button");
+
+            if (!name) {
+                alert("يرجى إدخال اسم القسم.");
+                return;
+            }
+            if (subjects.length === 0) {
+                alert("يرجى اختيار مادة واحدة على الأقل للقسم.");
+                return;
+            }
+
+            if (disableButton) {
+                disableButton.disabled = true;
+            }
+            try {
+                await sendHttpRequest('POST', 'https://tourmaline-delirious-burglar.glitch.me/catagories', { name: name, subjects: subjects });
+                alert("تم إضافة القسم بنجاح.");
+                fetchData().then(() => {
+                    renderSectionControls();
+                    if (disableButton) {
+                        disableButton.disabled = false;
+                    }
+                }); // Refresh data and UI
+            } catch (error) {
+                console.error("Error adding section:", error);
+                if (disableButton) {
+                    disableButton.disabled = false;
+                }
+            }
+        }
+
+        function renderEditSectionForm() {
+            if (allSections.length === 0) {
+                return "<p>لا يوجد أقسام للتعديل.</p>";
+            }
+            return `
+                <div id="edit-section-form">
+                    <h3>تعديل قسم</h3>
+                    <label for="edit-section-id" class="rtl-label">اختر القسم للتعديل:</label><br>
+                    <select id="edit-section-id" class="select" onchange="populateEditSectionForm()">
+                        <option value="none">--اختر قسم--</option>
+                        ${allSections.map(section => `<option value="${section._id}">${section.name}</option>`).join('')}
+                    </select>
+                    <div id="edit-section-details"></div>
+                </div>
+            `;
+        }
+
+        function populateEditSectionForm() {
+            const sectionId = document.getElementById("edit-section-id").value;
+            const selectedSection = allSections.find(section => section._id === sectionId);
+            const subjects = ["اللغة العربية", "اللغة الانكليزية", "اللغة الفرنسية", "الكيمياء", "الفيزياء", "الاحياء", "الرياضيات", "التربية الاسلامية"];
+            const editSectionDetails = document.getElementById("edit-section-details");
+
+            if (selectedSection) {
+                editSectionDetails.innerHTML = `
+                    <hr>
+                    <label for="edit-section-name" class="rtl-label">اسم القسم الجديد:</label><br>
+                    <input type="text" id="edit-section-name" class="input-field" dir="rtl" value="${selectedSection.name}"><br><br>
+                    <label class="rtl-label">المواد الشاملة للقسم:</label><br>
+                    <div class="checkbox-group">
+                        ${subjects.map(subject => `
+                            <label>
+                                <input type="checkbox" name="edit-section-subjects" value="${subject}" ${selectedSection.subjects.includes(subject) ? 'checked' : ''}> ${subject}
+                            </label>
+                        `).join('')}
+                    </div>
+                    <button onclick="updateSection('${selectedSection._id}')" class="disable-button">تحديث القسم</button>
+                `;
+            } else {
+                editSectionDetails.innerHTML = '';
+            }
+        }
+
+        function getSelectedEditSectionSubjects() {
+            const checkboxes = document.querySelectorAll('input[name="edit-section-subjects"]:checked');
+            return Array.from(checkboxes).map(cb => cb.value);
+        }
+
+        async function updateSection(id) {
+            const name = document.getElementById("edit-section-name").value;
+            const subjects = getSelectedEditSectionSubjects();
+            const disableButton = document.querySelector("#edit-section-form .disable-button");
+
+            if (!name) {
+                alert("يرجى إدخال اسم القسم.");
+                return;
+            }
+            if (subjects.length === 0) {
+                alert("يرجى اختيار مادة واحدة على الأقل للقسم.");
+                return;
+            }
+
+            if (disableButton) {
+                disableButton.disabled = true;
+            }
+            try {
+                await sendHttpRequest('PUT', `https://tourmaline-delirious-burglar.glitch.me/catagories/${id}`, { name: name, subjects: subjects });
+                alert("تم تحديث القسم بنجاح.");
+                fetchData().then(() => {
+                    renderSectionControls();
+                    if (disableButton) {
+                        disableButton.disabled = false;
+                    }
+                }); // Refresh data and UI
+            } catch (error) {
+                console.error("Error updating section:", error);
+                if (disableButton) {
+                    disableButton.disabled = false;
+                }
+            }
+        }
+
+        function renderDeleteSectionForm() {
+            if (allSections.length === 0) {
+                return "<p>لا يوجد أقسام للحذف.</p>";
+            }
+            return `
+                <div id="delete-section-form">
+                    <h3>حذف قسم</h3>
+                    <label for="delete-section-id" class="rtl-label">اختر القسم للحذف:</label><br>
+                    <select id="delete-section-id" class="select">
+                        <option value="none">--اختر قسم--</option>
+                        ${allSections.map(section => `<option value="${section._id}">${section.name}</option>`).join('')}
+                    </select><br><br>
+                    <button onclick="deleteSection()" class="disable-button">حذف القسم</button>
+                </div>
+            `;
+        }
+
+        async function deleteSection() {
+            const sectionId = document.getElementById("delete-section-id").value;
+            const disableButton = document.querySelector("#delete-section-form .disable-button");
+
+            if (sectionId === "none") {
+                alert("يرجى اختيار قسم للحذف.");
+                return;
+            }
+            if (disableButton) {
+                disableButton.disabled = true;
+            }
+            try {
+                await sendHttpRequest('DELETE', `https://tourmaline-delirious-burglar.glitch.me/catagories/${sectionId}`);
+                alert("تم حذف القسم بنجاح.");
+                fetchData().then(() => {
+                    renderSectionControls();
+                    if (disableButton) {
+                        disableButton.disabled = false;
+                    }
+                }); // Refresh data and UI
+            } catch (error) {
+                console.error("Error deleting section:", error);
+                if (disableButton) {
+                    disableButton.disabled = false;
+                }
+            }
+        }
+
+        // ---------------------------- Questions Functionality (API - Links) ----------------------------
+
+        function renderQuestionControls() {
+            appEl.innerHTML = `
+                <h2>التحكم في الروابط (الأسئلة)</h2>
+                <select id="question-methods" class="select" name="question-methods" onchange="handleQuestionMethodChange()">
+                    <option value="none">--يرجى الاختيار--</option>
+                    <option value="add">إضافة رابط</option>
+                    <option value="edit">تعديل رابط</option>
+                    <option value="delete">حذف رابط</option>
+                </select>
+                <div id="question-controls-container"></div>
+            `;
+        }
+
+        function handleQuestionMethodChange() {
+            const container = document.getElementById("question-controls-container");
+            container.innerHTML = '';
+            const selectedMethod = document.getElementById("question-methods").value;
+
+            if (selectedMethod === "add") {
+                container.innerHTML = renderAddQuestionForm();
+            } else if (selectedMethod === "edit") {
+                container.innerHTML = renderEditQuestionForm();
+            } else if (selectedMethod === "delete") {
+                container.innerHTML = renderDeleteQuestionForm();
+            }
+        }
+
+        function renderAddQuestionForm() {
+            return `
+                <div id="add-question-form">
+                    <h3>إضافة رابط جديد</h3>
+                    <label for="question-name" class="rtl-label">اسم الرابط (الدور):</label><br>
+                    <input type="text" id="question-name" class="input-field" dir="rtl"><br><br>
+                    <label for="question-subject" class="rtl-label">المادة:</label><br>
+                    <select id="question-subject" class="select" onchange="populateQuestionSections()">
+                        <option value="none">--اختر مادة--</option>
+                        ${availableSubjects.map(subject => `<option value="${subject}">${subject}</option>`).join('')}
+                    </select><br><br>
+                    <label for="question-section" class="rtl-label">القسم:</label><br>
+                    <select id="question-section" class="select">
+                        <option value="none">--اختر قسم--</option>
+                    </select><br><br>
+                    <label for="question-year" class="rtl-label">السنة:</label><br>
+                    <input type="number" id="question-year" class="input-field" dir="rtl"><br><br>
+                    <label for="question-url" class="rtl-label">الرابط:</label><br>
+                    <input type="text" id="question-url" class="input-field" dir="rtl"><br><br>
+                    <button onclick="addQuestion()" class="disable-button">إضافة الرابط</button>
+                </div>
+            `;
+        }
+
+        function populateQuestionSections() {
+            const selectedSubject = document.getElementById("question-subject").value;
+            const sectionSelect = document.getElementById("question-section");
+            sectionSelect.innerHTML = '<option value="none">--اختر قسم--</option>';
+            if (selectedSubject !== "none") {
+                const relevantSections = allSections.filter(section => section.subjects.includes(selectedSubject));
+                relevantSections.forEach(section => {
+                    const option = document.createElement('option');
+                    option.value = section._id;
+                    option.textContent = section.name; // عرض اسم القسم
+                    sectionSelect.appendChild(option);
+                });
+            }
+        }
+
+        async function addQuestion() {
+            const title = document.getElementById("question-name").value; // استخدام title لاسم الرابط
+            const url = document.getElementById("question-url").value;   // استخدام url للرابط
+            const subject = document.getElementById("question-subject").value;
+            const section = document.getElementById("question-section").value; // استخدام section لـ section
+            const year = document.getElementById("question-year").value;
+            const disableButton = document.querySelector("#add-question-form .disable-button");
+
+            if (!title || !url || subject === "none" || section === "none" || !year) {
+                alert("يرجى ملء جميع الحقول واختيار المادة والقسم.");
+                return;
+            }
+
+            if (disableButton) {
+                disableButton.disabled = true;
+            }
+            try {
+                const requestData = {
+                    title: title, // اسم الرابط
+                    url: url,     // رابط الـ URL
+                    subject: subject,
+                    section: section, // ID القسم
+                    year: year
+                };
+                await sendHttpRequest('POST', 'https://tourmaline-delirious-burglar.glitch.me/links', requestData);
+                alert("تم إضافة الرابط بنجاح.");
+                fetchData().then(() => {
+                    renderQuestionControls();
+                    if (disableButton) {
+                        disableButton.disabled = false;
+                    }
+                }); // Refresh data and UI
+            } catch (error) {
+                console.error("Error adding link:", error);
+                if (disableButton) {
+                    disableButton.disabled = false;
+                }
+            }
+        }
+
+        function renderEditQuestionForm() {
+            if (allQuestions.length === 0) {
+                return "<p>لا يوجد روابط للتعديل.</p>";
+            }
+            return `
+                <div id="edit-question-form">
+                    <h3>تعديل رابط</h3>
+                    <label for="edit-question-id" class="rtl-label">اختر الرابط للتعديل:</label><br>
+                    <select id="edit-question-id" class="select" onchange="populateEditQuestionForm()">
+                        <option value="none">--اختر رابط--</option>
+                        ${allQuestions.map(question => `<option value="${question._id}">${question.title} (${question.subject} - ${question.year})</option>`).join('')}
+                    </select>
+                    <div id="edit-question-details"></div>
+                </div>
+            `;
+        }
+
+        function populateEditQuestionForm() {
+            const questionId = document.getElementById("edit-question-id").value;
+            const selectedQuestion = allQuestions.find(q => q._id === questionId);
+            const editQuestionDetails = document.getElementById("edit-question-details");
+
+            if (selectedQuestion) {
+                editQuestionDetails.innerHTML = `
+                    <hr>
+                    <label for="edit-question-name" class="rtl-label">اسم الرابط (الدور):</label><br>
+                    <input type="text" id="edit-question-name" class="input-field" dir="rtl" value="${selectedQuestion.title}"><br><br>
+                    <label for="edit-question-subject" class="rtl-label">المادة:</label><br>
+                    <select id="edit-question-subject" class="select" onchange="populateEditQuestionSections('${selectedQuestion.section}')">
+                        <option value="none">--اختر مادة--</option>
+                        ${availableSubjects.map(subject => `<option value="${subject}" ${selectedQuestion.subject === subject ? 'selected' : ''}>${subject}</option>`).join('')}
+                    </select><br><br>
+                    <label for="edit-question-section" class="rtl-label">القسم:</label><br>
+                    <select id="edit-question-section" class="select">
+                        <option value="none">--اختر قسم--</option>
+                    </select><br><br>
+                    <label for="edit-question-year" class="rtl-label">السنة:</label><br>
+                    <input type="number" id="edit-question-year" class="input-field" dir="rtl" value="${selectedQuestion.year}"><br><br>
+                    <label for="edit-question-url" class="rtl-label">الرابط:</label><br>
+                    <input type="text" id="edit-question-url" class="input-field" dir="rtl" value="${selectedQuestion.url}"><br><br>
+                    <button onclick="updateQuestion('${selectedQuestion._id}')" class="disable-button">تحديث الرابط</button>
+                `;
+                // Populate sections based on the initially selected subject
+                const initialSubject = document.getElementById("edit-question-subject").value;
+                populateEditQuestionSections(selectedQuestion.section, initialSubject);
+            } else {
+                editQuestionDetails.innerHTML = '';
+            }
+        }
+
+        function populateEditQuestionSections(selectedSectionId, currentSubject) {
+            const sectionSelect = document.getElementById("edit-question-section");
+            sectionSelect.innerHTML = '<option value="none">--اختر قسم--</option>';
+            if (currentSubject !== "none") {
+                const relevantSections = allSections.filter(section => section.subjects.includes(currentSubject));
+                relevantSections.forEach(section => {
+                    const option = document.createElement('option');
+                    option.value = section._id;
+                    option.textContent = section.name; // عرض اسم القسم
+                    option.selected = section._id === selectedSectionId;
+                    sectionSelect.appendChild(option);
+                });
+            }
+        }
+
+        async function updateQuestion(id) {
+            const title = document.getElementById("edit-question-name").value; // استخدام title لاسم الرابط
+            const url = document.getElementById("edit-question-url").value;   // استخدام url للرابط
+            const subject = document.getElementById("edit-question-subject").value;
+            const section = document.getElementById("edit-question-section").value; // استخدام section لـ section ID
+            const year = document.getElementById("edit-question-year").value;
+            const disableButton = document.querySelector("#edit-question-form .disable-button");
+
+            if (!title || !url || subject === "none" || section === "none" || !year) {
+                alert("يرجى ملء جميع الحقول واختيار المادة والقسم.");
+                return;
+            }
+
+            if (disableButton) {
+                disableButton.disabled = true;
+            }
+            try {
+                const requestData = {
+                    title: title, // اسم الرابط
+                    url: url,     // رابط الـ URL
+                    subject: subject,
+                    section: section, // ID القسم
+                    year: year
+                };
+                await sendHttpRequest('PUT', `https://tourmaline-delirious-burglar.glitch.me/links/${id}`, requestData);
+                alert("تم تحديث الرابط بنجاح.");
+                fetchData().then(() => {
+                    renderQuestionControls();
+                    if (disableButton) {
+                        disableButton.disabled = false;
+                    }
+                }); // Refresh data and UI
+            } catch (error) {
+                console.error("Error updating link:", error);
+                if (disableButton) {
+                    disableButton.disabled = false;
+                }
+            }
+        }
+
+        function renderDeleteQuestionForm() {
+            if (allQuestions.length === 0) {
+                return "<p>لا يوجد روابط للحذف.</p>";
+            }
+            return `
+                <div id="delete-question-form">
+                    <h3>حذف رابط</h3>
+                    <label for="delete-question-id" class="rtl-label">اختر الرابط للحذف:</label><br>
+                    <select id="delete-question-id" class="select">
+                        <option value="none">--اختر رابط--</option>
+                        ${allQuestions.map(question => `<option value="${question._id}">${question.title} (${question.subject} - ${question.year})</option>`).join('')}
+                    </select><br><br>
+                    <button onclick="deleteQuestion()" class="disable-button">حذف الرابط</button>
+                </div>
+            `;
+        }
+
+        async function deleteQuestion() {
+            const questionId = document.getElementById("delete-question-id").value;
+            const disableButton = document.querySelector("#delete-question-form .disable-button");
+
+            if (questionId === "none") {
+                alert("يرجى اختيار رابط للحذف.");
+                return;
+            }
+            if (disableButton) {
+                disableButton.disabled = true;
+            }
+            try {
+                await sendHttpRequest('DELETE', `https://tourmaline-delirious-burglar.glitch.me/links/${questionId}`);
+                alert("تم حذف الرابط بنجاح.");
+                fetchData().then(() => {
+                    renderQuestionControls();
+                    if (disableButton) {
+                        disableButton.disabled = false;
+                    }
+                }); // Refresh data and UI
+            } catch (error) {
+                console.error("Error deleting link:", error);
+                if (disableButton) {
+                    disableButton.disabled = false;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
